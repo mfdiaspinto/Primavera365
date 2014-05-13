@@ -25,6 +25,10 @@ function Formula() {
         getParameters: function () {
             return associativeArray;
         },
+
+        getParameter: function (key) {
+            return associativeArray[key];
+        },
         getName: function () {
             return name;
         },
@@ -47,8 +51,11 @@ function ListFormulas() {
         add: function (key, value) {
             list[key] = value;
         },
-        getList: function () {
+        getLists: function () {
             return list;
+        },
+        getList: function (key) {
+            return list[key];
         }
     }
 }

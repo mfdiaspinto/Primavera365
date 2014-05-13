@@ -1,0 +1,2 @@
+bin\Debug\OfficeAppManifests\PrimaveraTaskPane.xml
+C:\Users\miguel.dias\Documents\GitHub\Primavera365\PrimaveraTaskPane-INO\PrimaveraTaskPane\bin\Debug\PrimaveraTaskPane.debugapp
