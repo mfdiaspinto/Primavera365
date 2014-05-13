@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProjectItem Type="Microsoft.VisualStudio.SharePoint.OfficeApp" DefaultFile="PrimaveraTaskPane.xml" SupportedTrustLevels="All" SupportedDeploymentScopes="AppPackage" xmlns="http://schemas.microsoft.com/VisualStudio/2010/SharePointTools/SharePointProjectItemModel">
+  <Files>
+    <ProjectItemFile Source="PrimaveraTaskPane.xml" Target="PrimaveraTaskPane.xml\" Type="AppPackage" />
+  </Files>
+  <ExtensionData>
+    <ExtensionDataItem Key="OfficeAppManifestRelativePath" Value="PrimaveraTaskPane.xml\PrimaveraTaskPane.xml" />
+    <ExtensionDataItem Key="OfficeAppStartPageRelativePath" Value="App\Home\Home.html" />
+  </ExtensionData>
+</ProjectItem>
