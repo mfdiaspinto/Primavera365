@@ -265,26 +265,30 @@
         formula.addParameter("Company", $('#editFormulaCompany').val());
         formula.addParameter("Year", $('#editFormulaYear').val());
 
-        Office.context.document.bindings.addFromNamedItemAsync(formula.getCell(), Office.BindingType.Text, { id: "PriFormula" },
-           function (asyncResult) {
-               if (asyncResult.status == "failed") {
-                   write('Error: ' + asyncResult.error.message);
-               }
-               else {
-                   // Write data to the new binding.
-                   Office.select("bindings#PriFormula").setDataAsync("Result Formula" + formula.getCell(), { coercionType: Office.BindingType.Text },
-                       function (asyncResult) {
-                           if (asyncResult.status == "failed") {
-                               write('Error: ' + asyncResult.error.message);
-                           }
-                           else {
-
-                               listFormulas.add(formula.getName(), formula);
-                               cleanEditFormula();
-                           }
-                       });
-               }
-           });
+        $.getJSON("http://localhost:3000/netsales/" + formula.getParameter("Company"), function (data) {
+            Office.context.document.bindings.addFromNamedItemAsync(formula.getCell(), Office.BindingType.Text, { id: "PriFormula" },
+                      function (asyncResult) {
+                          if (asyncResult.status == "failed") {
+                              write('Error: ' + asyncResult.error.message);
+                          }
+                          else {
+                              // Write data to the new binding.
+                              Office.select("bindings#PriFormula").setDataAsync(data.value, { coercionType: Office.BindingType.Text },
+                                  function (asyncResult) {
+                                      if (asyncResult.status == "failed") {
+                                          write('Error: ' + asyncResult.error.message);
+                                      }
+                                      else {
+                                          listFormulas.add(formula.getName(), formula);
+                                          cleanEditFormula();
+                                      }
+                                  });
+                          }
+                      });
+        })
+          .fail(function (data) {
+              console.log("error");
+          });
     }
 
     function openFormula(event) {

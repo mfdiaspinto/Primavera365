@@ -3,5 +3,12 @@
   <PropertyGroup>
     <SharePointSiteUrl>https://priprimavera.sharepoint.com/</SharePointSiteUrl>
     <OfficeAppStartAction>Microsoft Excel</OfficeAppStartAction>
+    <GeneratedFeatureId>2e7c7bf9-2130-4294-ada1-1249a2188863</GeneratedFeatureId>
+    <GeneratedPackageId>23289fcb-6bad-444b-8e68-641bbef4e47d</GeneratedPackageId>
+    <GeneratedModuleId>{1318201f-48a0-45a2-a4cf-446d9830cc09}</GeneratedModuleId>
+    <GeneratedListId>{9109529d-9c79-4019-a3ed-ab110ba6144e}</GeneratedListId>
+    <GeneratedProductId>{1752fef7-454f-4076-aaa5-90a445a833c4}</GeneratedProductId>
+    <GeneratedAppVersion>1.0.0.0</GeneratedAppVersion>
+    <GeneratedClientSecret>o7jINVyV+cr5YZtv+dODxK5O9Z1LGo6mSlIDXvuksAE=</GeneratedClientSecret>
   </PropertyGroup>
 </Project>
