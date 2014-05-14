@@ -265,7 +265,7 @@
         formula.addParameter("Company", $('#editFormulaCompany').val());
         formula.addParameter("Year", $('#editFormulaYear').val());
 
-        $.getJSON("http://localhost:3000/netsales/" + formula.getParameter("Company"), function (data) {
+        $.getJSON("http://localhost:36500/netsales/" + formula.getParameter("Company"), function (data) {
             Office.context.document.bindings.addFromNamedItemAsync(formula.getCell(), Office.BindingType.Text, { id: "PriFormula" },
                       function (asyncResult) {
                           if (asyncResult.status == "failed") {
