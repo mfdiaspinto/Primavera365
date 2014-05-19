@@ -197,11 +197,27 @@
             $("#companyDiv").append(data);
             $('#load-lists').click(loadCompanyLists);
 
-            var data = loadCompanies();
+            var urlPath = 'http://priserver-mfdiaspinto.rhcloud.com/companies';
 
-            for (var i = 0; i < data.companies.length; i++) {
-                $('#companySelector').append('<option value=' + data.companies[i].name + '>' + data.companies[i].description + '</option>');
-            }
+            $.ajax({
+                type: 'GET',
+                url: urlPath,
+                success: function (data) {
+                  for (var i = 0; i < data.length; i++) {
+                    $('#companySelector').append('<option value=' + data[i].name + '>' + data[i].name + '</option>');
+                    $('#editFormulaCompany').append('<option value=' + data[i].name + '>' + data[i].name + '</option>');
+                    $('#newFormulaCompany').append('<option value=' + data[i].name + '>' + data[i].name + '</option>');
+
+                  }
+                },
+                error: function (error) {
+                    write(error.statusText);
+                }
+            });
+
+//            var data = loadCompanies();
+
+           
         });
     }
 
@@ -265,7 +281,7 @@
         formula.addParameter("Company", $('#editFormulaCompany').val());
         formula.addParameter("Year", $('#editFormulaYear').val());
 
-        $.getJSON("http://localhost:36500/netsales/" + formula.getParameter("Company"), function (data) {
+        $.getJSON("http://priserver-mfdiaspinto.rhcloud.com/netsales/" + formula.getParameter("Company"), function (data) {
             Office.context.document.bindings.addFromNamedItemAsync(formula.getCell(), Office.BindingType.Text, { id: "PriFormula" },
                       function (asyncResult) {
                           if (asyncResult.status == "failed") {
@@ -331,7 +347,7 @@
 
 		    $('#editFormula').click(editFormula);
 		    $('#cleanEditFormula').click(cleanEditFormula);
-		    
+
 		    loadCompaniesForm();
             });
         }
