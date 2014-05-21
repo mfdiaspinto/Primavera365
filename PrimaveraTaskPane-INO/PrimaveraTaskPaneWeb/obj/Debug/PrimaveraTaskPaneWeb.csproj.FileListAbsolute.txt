@@ -1,6 +1,6 @@
 C:\Users\miguel.dias\Documents\GitHub\Primavera365\PrimaveraTaskPane-INO\PrimaveraTaskPaneWeb\bin\PrimaveraTaskPaneWeb.dll.config
 C:\Users\miguel.dias\Documents\GitHub\Primavera365\PrimaveraTaskPane-INO\PrimaveraTaskPaneWeb\bin\PrimaveraTaskPaneWeb.dll
 C:\Users\miguel.dias\Documents\GitHub\Primavera365\PrimaveraTaskPane-INO\PrimaveraTaskPaneWeb\bin\PrimaveraTaskPaneWeb.pdb
-C:\Users\miguel.dias\Documents\GitHub\Primavera365\PrimaveraTaskPane-INO\PrimaveraTaskPaneWeb\obj\Debug\PrimaveraTaskPaneWeb.csprojResolveAssemblyReference.cache
 C:\Users\miguel.dias\Documents\GitHub\Primavera365\PrimaveraTaskPane-INO\PrimaveraTaskPaneWeb\obj\Debug\PrimaveraTaskPaneWeb.dll
 C:\Users\miguel.dias\Documents\GitHub\Primavera365\PrimaveraTaskPane-INO\PrimaveraTaskPaneWeb\obj\Debug\PrimaveraTaskPaneWeb.pdb
+C:\Users\miguel.dias\Documents\GitHub\Primavera365\PrimaveraTaskPane-INO\PrimaveraTaskPaneWeb\obj\Debug\PrimaveraTaskPaneWeb.csprojResolveAssemblyReference.cache

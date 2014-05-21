@@ -4,6 +4,7 @@
 
 (function () {
     "use strict";
+    var server = 'http://priserver-mfdiaspinto.rhcloud.com';
 
     function getTextFromDocument() {
 
@@ -17,56 +18,25 @@
     }
 
     function addListToExcel() {
-	    var e = document.getElementById("listSelector");
-	    var strUser = e.options[e.selectedIndex].value;
-	    if("Order" == strUser)
-	    {
-	      var list = loadOrderList();
-	      writeTableToExcel(list.data);
-	    }
-	    else
-	    {
-		    var list = loadSalesList();
-		    writeTableToExcel(list.data);
-	    }
+
+        var company = $('#companySelector').val();
+        var list = $('#listSelector').val();
+
+        var urlPath = server + '/' + company + '/' + list;
+        $.ajax({
+            type: 'GET',
+            url: urlPath,
+            success: function (data) {
+                writeTableToExcel(data.columns, data.rows);
+            },
+            error: function (error) {
+                write(error.statusText);
+            }
+        });
     }
 
-    function testApi() {
-
-     var test = 'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20answers.getbycategory%20where%20category_id%3D2115500137%20and%20type%3D%22resolved%22&format=json&diagnostics=true&callback=';
-  
-      $.getJSON( test, function(result) {
-        console.log( "success" );
-      })
-        .done(function(result) {
-            writeTableToExcel(result.query.results.Question);
-        })
-        .fail(function(error) {
-          console.log( "error" );
-        })
-        .always(function() {
-          console.log( "complete" );
-        })
-   
-}
-
     function addListToPanel() {
-    
-      /* var test = 'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20answers.getbycategory%20where%20category_id%3D2115500137%20and%20type%3D%22resolved%22&format=json&diagnostics=true&callback=';
 
-	    $.getJSON( test, function(result) {
-	      console.log( "success" );
-	    })
-	      .done(function(result) {
-		    writeTableToExcel(result);
-	      })
-	      .fail(function(error) {
-	        console.log( "error" );
-	      })
-	      .always(function() {
-	        console.log( "complete" );
-	      });
-	      */
 	    var e = document.getElementById("listSelector");
 	    var strUser = e.options[e.selectedIndex].value;
 	    if("Order" == strUser)
@@ -111,41 +81,33 @@
 
     }
 
-    function writeTableToExcel(result) {
+    function writeTableToExcel(columns, rows) {
+        var myTable = new Office.TableData();
 
-        //Office.context.document.bindings.addFromNamedItemAsync("A10:A13", "matrix", { id: "MyCities" },
-        //function (asyncResult) {
-        //    if (asyncResult.status == "failed") {
-        //        write('Error: ' + asyncResult.error.message);
-        //    }
-        //    else {
-        //        // Write data to the new binding.
-        //        Office.select("bindings#MyCities").setDataAsync([['Berlin'], ['Munich'], ['Duisburg']], { coercionType: "matrix" },
-        //            function (asyncResult) {
-        //                if (asyncResult.status == "failed") {
-        //                    write('Error: ' + asyncResult.error.message);
-        //                }
-        //            });
-        //    }
-        //});
+        var lineHeader = [];
+        for (var i = 0; i < columns.length; i++) {
 
-        $('#loggedinuser').append(appContext.getName);
+            lineHeader.push(columns[i].name);
+        }
+        // SET HEADER
+        myTable.headers = [lineHeader];
 
-	    var rows = result.length;
-	    var myTable = new Office.TableData();
-        myTable.headers = [["key", "documentType", "serie", "number", "supplier", "total"]];
-	    myTable.rows = [];
-	    var items = result;
+        //SET ROWS
+        for (var i = 0; i < rows.length; i++) {
+            var line = [];
 
-	    for (var i = 0; i < rows; i++) {
-		    myTable.rows.push([items[i].key, items[i].documentType, items[i].serie, items[i].number, items[i].supplier, items[i].total]);
-	    }
-	
-        Office.context.document.setSelectedDataAsync(myTable, {coercionType: "table"},
-            function (asyncResult) {
-                var error = asyncResult.error;
-                if (asyncResult.status === "failed"){
-                write(error.name + ": " + error.message);
+            for (var j = 0; j < columns.length; j++) {
+                line.push(rows[i][columns[j].name]);
+            }
+            myTable.rows.push(line);
+        }
+
+        // Write table.
+        Office.context.document.setSelectedDataAsync(myTable, { coercionType: "table" },
+            function (result) {
+                var error = result.error
+                if (result.status === "failed") {
+                    write(error.name + ": " + error.message);
                 }
             });
     }
@@ -197,8 +159,7 @@
             $("#companyDiv").append(data);
             $('#load-lists').click(loadCompanyLists);
 
-            var urlPath = 'http://priserver-mfdiaspinto.rhcloud.com/companies';
-
+            var urlPath = server + '/companies';
             $.ajax({
                 type: 'GET',
                 url: urlPath,
@@ -213,11 +174,7 @@
                 error: function (error) {
                     write(error.statusText);
                 }
-            });
-
-//            var data = loadCompanies();
-
-           
+            });   
         });
     }
 
@@ -226,17 +183,27 @@
             $("#listsDiv").append(data);
             $('#add-panel').click(addListToPanel);
             $('#add-excel').click(addListToExcel);
-            $('#list-api').click(testApi);
 
-            var e = document.getElementById("companySelector");
-            var strUser = e.options[e.selectedIndex].value;
+//            var e = document.getElementById("companySelector");
+//            var strUser = e.options[e.selectedIndex].value;
 
-            var data = loadLists(strUser);
-            $('#listSelector').remove();
-            $('#divListSelector').append('<select id="listSelector" class="form-control"> </select>');
-            for (var i = 0; i < data.lists.length; i++) {
-                $('#listSelector').append('<option value=' + data.lists[i].name + '>' + data.lists[i].description + '</option>');
-            }
+            var company = $('#companySelector').val();
+
+            var urlPath = server + '/' + company + '/lists';
+            $.ajax({
+                type: 'GET',
+                url: urlPath,
+                success: function (data) {
+                        $('#listSelector').remove();
+                        $('#divListSelector').append('<select id="listSelector" class="form-control"> </select>');
+                        for (var i = 0; i < data.rows.length; i++) {
+                            $('#listSelector').append('<option value=' + data.rows[i].key + '>' + data.rows[i].description + '</option>');
+                        }
+                },
+                error: function (error) {
+                    write(error.statusText);
+                }
+            });
         });
     }
 
@@ -281,7 +248,7 @@
         formula.addParameter("Company", $('#editFormulaCompany').val());
         formula.addParameter("Year", $('#editFormulaYear').val());
 
-        $.getJSON("http://priserver-mfdiaspinto.rhcloud.com/netsales/" + formula.getParameter("Company"), function (data) {
+        $.getJSON(server + "/netsales/" + formula.getParameter("Company"), function (data) {
             Office.context.document.bindings.addFromNamedItemAsync(formula.getCell(), Office.BindingType.Text, { id: "PriFormula" },
                       function (asyncResult) {
                           if (asyncResult.status == "failed") {
