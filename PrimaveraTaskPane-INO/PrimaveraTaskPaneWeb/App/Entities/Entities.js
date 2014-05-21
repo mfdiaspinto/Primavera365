@@ -15,6 +15,7 @@ function AppContext() {
 
 function Formula() {
     var associativeArray = {};
+    var key = "";
     var name = "";
     var cell = "A1";
 
@@ -35,6 +36,12 @@ function Formula() {
         setName: function (newName) {
             name = newName;
         },
+        getKey: function () {
+            return key;
+        },
+        setKey: function (newName) {
+            key = newName;
+        },
         getCell: function () {
             return cell;
         },
@@ -46,9 +53,15 @@ function Formula() {
 
 function ListFormulas() {
     var list = {};
-  
+    var count = 0;
     return {
         add: function (key, value) {
+            if (list[key] == undefined)
+            {
+                list[key] = value;
+                count = count + 1;
+            }
+
             list[key] = value;
         },
         getLists: function () {
@@ -56,6 +69,9 @@ function ListFormulas() {
         },
         getList: function (key) {
             return list[key];
+        },
+        getCount: function (key) {
+           return count;
         }
     }
 }
