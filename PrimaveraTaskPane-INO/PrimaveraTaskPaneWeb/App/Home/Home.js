@@ -1,11 +1,6 @@
-﻿/// <reference path="Templates/login.html" />
-/// <reference path="Templates/Login.html" />
-/// <reference path../../Scripts/App.js" />
-
-(function () {
+﻿(function () {
     "use strict";
-    var server = 'http://priserver-mfdiaspinto.rhcloud.com';
-
+  
     function getTextFromDocument() {
 
         Office.context.document.getSelectedDataAsync(Office.CoercionType.Text,
@@ -36,20 +31,20 @@
     }
 
     function addListToPanel() {
+        var company = $('#companySelector').val();
+        var list = $('#listSelector').val();
 
-	    var e = document.getElementById("listSelector");
-	    var strUser = e.options[e.selectedIndex].value;
-	    if("Order" == strUser)
-	    {
-	      var list = loadOrderList();
-	  
-	      writeTableToPanel(list);
-	    }
-	    else
-	    {
-		     var list = loadSalesList();
-		     writeTableToPanel(list);
-	    }
+        var urlPath = server + '/' + company + '/' + list;
+        $.ajax({
+            type: 'GET',
+            url: urlPath,
+            success: function (data) {
+                writeTableToPanel(data.columns, data.rows);
+            },
+            error: function (error) {
+                write(error.statusText);
+            }
+        });
     }
    
     function login() {
@@ -112,38 +107,31 @@
             });
     }
 
-    function writeTableToPanel(result) {
-	    var rows = result.data.length;
-	    var myTable = new Office.TableData();
-        myTable.headers = [["key", "documentType", "serie", "number", "supplier", "total"]];
-	    myTable.rows = [];
-	    var items = result.data;
-	    $('#idTable').remove();
-	    $('#box').append('<table id="idTable" class="table table-condensed"></table>');
-	    $('#idTable').append('<thead id="idColumn"> </thead>');
-	    $('#idColumn').append('<tr id="idTr"> </tr>');
-	    $('#idTr').append('<th>Key</th>');
-	    $('#idTr').append('<th>Document Type</th>');
-	    $('#idTr').append('<th>Serie</th>');
-	    $('#idTr').append('<th>Number</th>');
-	    $('#idTr').append('<th>Supplier</th>');
-	    $('#idTr').append('<th>Total</th>');
-	    $('#idTable').append('<tbody id="idTbody"> </thead>');
+    function writeTableToPanel(columns, rows) {
+        $('#idTable').remove();
+        $('#box').append('<table id="idTable" class="table table-condensed"></table>');
+        $('#idTable').append('<thead id="idColumn"> </thead>');
+        $('#idColumn').append('<tr id="idTr"> </tr>');
+        for (var i = 0; i < columns.length; i++) {
+            $('#idTr').append('<th>' + columns[i].name + '</th>');
+        }
+        $('#idTable').append('<tbody id="idTbody"> </thead>');
 
-	    for (var i = 0; i < rows; i++) {
-		    var idrow = 'idRow'+i;
-		    $('#idTbody').append('<tr id="'+idrow + '"></tr>');
-		    $('#' + idrow).append('<td>' +items[i].key + '</td>');
-		    $('#' + idrow).append('<td>' +items[i].documentType + '</td>');
-		    $('#' + idrow).append('<td>' + items[i].serie+ '</td>');
-		    $('#' + idrow).append('<td>' + items[i].number+ '</td>');
-		    $('#' + idrow).append('<td>' +items[i].supplier + '</td>');
-		    $('#' + idrow).append('<td>' +items[i].total + '</td>');
-	    }
+        for (var i = 0; i < rows.length; i++) {
+
+            var idrow = 'idRow' + i;
+
+            $('#idTbody').append('<tr id="' + idrow + '"></tr>');
+            for (var j = 0; j < columns.length; j++) {
+
+                $('#' + idrow).append('<td>' + rows[i][columns[j].name] + '</td>');
+            }
+        }
     }
 
-    // Function that writes to a div with id='message' on the page.
-    function write(message){
+    function write(message) {
+        $('#errorModal').modal('show');
+        document.getElementById('message').innerText = "";
         document.getElementById('message').innerText += message; 
     }
 
@@ -212,6 +200,7 @@
         formula.setCell($('#newFormulaCellID').val());
         formula.addParameter("Company", $('#newFormulaCompany').val());
         formula.addParameter("Year", $('#newFormulaYear').val());
+        formula.addParameter("Month", $('#newFormulaMonth').val());
 
         listFormulas.add(formula.getKey(), formula);
         $.getJSON(server + "/netsales/" + formula.getParameter("Company"), function (data) {
@@ -250,6 +239,7 @@
         formula.setCell($('#editFormulaCellID').val());
         formula.addParameter("Company", $('#editFormulaCompany').val());
         formula.addParameter("Year", $('#editFormulaYear').val());
+        formula.addParameter("Month", $('#editFormulaMonth').val());
 
         $.getJSON(server + "/netsales/" + formula.getParameter("Company"), function (data) {
             Office.context.document.bindings.addFromNamedItemAsync(formula.getCell(), Office.BindingType.Text, { id: "PriFormula" },
@@ -285,6 +275,7 @@
         $('#editFormulaId').text(key);
         $('#editFormulaName').text(formula.getName());
         $('#editFormulaYear').val(formula.getParameter("Year"));
+        $('#editFormulaMonth').val(formula.getParameter("Month"));
         $('#editFormulaCompany').val(formula.getParameter("Company"));
         $('#editFormulaCellID').val(formula.getCell());
 
@@ -342,7 +333,18 @@
         }
     }
 
+    function loadCompanyLists() {
+        loadListsForm();
+    }
+    
+    function generatePath(parameters) {
 
+       
+        return server + "";
+    }
+
+
+    // INIT APP
     Office.initialize = function (reason) {
             $(document).ready(function () {
 		    $('#get-text').click(getTextFromDocument);
@@ -363,10 +365,8 @@
             });
         }
 
-    function loadCompanyLists(){
-        loadListsForm();
-    }
-
+    // VARIAVEIS GLOBAIS
     var appContext = new AppContext();
     var listFormulas = new ListFormulas();
+    var server = 'http://priserver-mfdiaspinto.rhcloud.com';
 })();
