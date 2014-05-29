@@ -59,6 +59,15 @@
             <div id="sectionB" class="tab-pane fade">
                 <div class="row">
                     <div class="col-md-3 col-md-offset-3">
+                        <!--//data-toggle="modal" data-target="#myModal"-->
+                        <button type="button" class="btn btn-default btn-sm" id="createFormula" >
+                            <span class="glyphicon glyphicon-new-window"></span> Create
+                        </button>
+
+                        <button type="button" class="btn btn-default btn-sm" disabled id="saveAll">
+                            <span class="glyphicon glyphicon-save"></span> Save
+                        </button>
+
                         <button type="button" class="btn btn-default btn-sm" id="refreshAll">
                             <span class="glyphicon glyphicon-refresh"></span> Refresh all
                         </button>
@@ -67,11 +76,6 @@
                     <div id="formulasDiv" class="col-md-12">
                     </div>
                     <hr>
-                    <div class="col-md-3 col-md-offset-3">
-                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">
-                            <span class="glyphicon glyphicon-new-window"></span> Create
-                        </button>
-                    </div>
               </div>
                 <!--NEW FORMULA MODAL-->
                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -79,21 +83,28 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="myModalLabel">Fórmula - Net Order</h4>
+                                <h4 class="modal-title" id="myModalLabel">Nova Fórmula</h4>
                             </div>
                             <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="formula">Formula</label>
+                                    <select id="newFormula" class="form-control"></select>
+                                </div>
                                 <div class="form-group">
                                     <label for="companyFormula">Company</label>
                                     <select id="newFormulaCompany" class="form-control"></select>
                                 </div>
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">Year</label>
+                                <div id="newParametersModal">
+
+                                </div>
+                                <!--<div class="form-group">
+                                    <label >Year</label>
                                     <input id="newFormulaYear" type="number" class="form-control" placeholder="Year">
                                 </div>
                                 <div class="form-group">
                                     <label for="labelMonth">Month</label>
                                     <input id="newFormulaMonth" type="number" class="form-control" placeholder="Month">
-                                </div>
+                                </div>-->
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Cell</label>
                                     <input id="newFormulaCellID" type="text" class="form-control" placeholder="Cell">
@@ -122,14 +133,11 @@
                                     <label for="companyFormula">Company</label>
                                     <select id="editFormulaCompany" class="form-control"></select>
                                 </div>
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">Year</label>
-                                    <input id="editFormulaYear" type="number" class="form-control" placeholder="Year">
+                                
+                                <div id="editParametersModal">
+
                                 </div>
-                                <div class="form-group">
-                                    <label for="labelMonth">Month</label>
-                                    <input id="editFormulaMonth" type="number" class="form-control" placeholder="Month">
-                                </div>
+
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Cell</label>
                                     <input id="editFormulaCellID" type="text" class="form-control" placeholder="Cell">

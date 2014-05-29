@@ -17,6 +17,7 @@ function Formula() {
     var associativeArray = {};
     var key = "";
     var name = "";
+    var formulaName = "";
     var cell = "A1";
 
     return {
@@ -35,6 +36,12 @@ function Formula() {
         },
         setName: function (newName) {
             name = newName;
+        },
+        getFormulaName: function () {
+            return formulaName;
+        },
+        setFormulaName: function (newName) {
+            formulaName = newName;
         },
         getKey: function () {
             return key;
