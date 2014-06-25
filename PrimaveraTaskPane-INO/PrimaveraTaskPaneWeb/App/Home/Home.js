@@ -220,8 +220,6 @@
         formula.addParameter("Day", "undefined");
         formula.setName(formula.getFormulaName() + '/' + formula.getParameter("Company") + '/' + formula.getParameter("Year") + '/' + formula.getParameter("Month"));
 
-
-        listFormulas.add(formula.getKey(), formula);
         $.getJSON(server + formula.getParameter("Company") + "/netsales/" + formula.getParameter("Year") + "/" + formula.getParameter("Month") + "/" + formula.getParameter("Day"), function (data) {
             Office.context.document.bindings.addFromNamedItemAsync(formula.getCell(), Office.BindingType.Text, { id: "PriFormula" },
                 function (asyncResult) {
@@ -232,7 +230,7 @@
                         // Write data to the new binding.
                         if (data.length > 0) {
                             var result = data[0].value;
-
+                            listFormulas.add(formula.getKey(), formula);
 
                             Office.select("bindings#PriFormula").setDataAsync(result, { coercionType: Office.BindingType.Text },
                                 function (asyncResult) {
@@ -407,6 +405,60 @@
         $('#myModal').modal('show');
     }
 
+    function saveReport() {
+        var reportName = $('#newReportName').val();
+        var list = listFormulas.getLists();
+        var report = [];
+        for (var i = 0; i < listFormulas.getCount() ; i++) {
+            var idformula = i + '_FORMULA';
+            report.push({
+                key: list[idformula].getKey(),
+                name: list[idformula].getName(),
+                formulaName: list[idformula].getFormulaName(),
+                cell: list[idformula].getCell(),
+                parameters: list[idformula].getParameters(),
+                });
+        }
+
+        var urlPath = server + 'report';
+        $.ajax({
+                type: 'POST',
+                url: urlPath,
+                data: { name: reportName, formulas: report },
+                success: function (data) {
+                    $('#myReportSave').modal('hide');
+                },
+                error: function (error) {
+                    write(error.statusText);
+                }
+            });
+    }
+
+
+    function getReports() {
+        $.getJSON(server + 'reports', function (data) {
+            listFormulas = new ListFormulas();
+            for (var i = 0; i < data.length ; i++) {
+                var report = data[i].value;
+                for (var j = 0; j < report.length ; j++) {
+                    var formula = new Formula();
+                    formula.setKey(report[j].key);
+                    formula.setCell(report[j].cell);
+                    formula.setFormulaName(report[j].formulaName);;
+                    formula.setName(report[j].name);
+                    formula.addParameter("Company", report[j].parameters.Company);
+                    formula.addParameter("Year", report[j].parameters.Year);
+                    formula.addParameter("Month", report[j].parameters.Month);
+                    formula.addParameter("Day", "undefined");
+                }
+            }
+        })
+          .fail(function (data) {
+              console.log("error");
+          });
+    }
+
+
     // INIT APP
     Office.initialize = function (reason) {
             $(document).ready(function () {
@@ -425,10 +477,13 @@
 
 		    $('#editFormula').click(editFormula);
 		    $('#cleanEditFormula').click(cleanEditFormula);
-
+		    $('#saveReport').click(saveReport);
+		    
 		    loadCompaniesForm();
 
 		    loadFormulas();
+
+		    getReports();
             });
         }
 

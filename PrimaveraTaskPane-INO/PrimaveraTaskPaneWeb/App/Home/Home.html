@@ -64,7 +64,7 @@
                             <span class="glyphicon glyphicon-new-window"></span> Create
                         </button>
 
-                        <button type="button" class="btn btn-default btn-sm" disabled id="saveAll">
+                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myReportSave">
                             <span class="glyphicon glyphicon-save"></span> Save
                         </button>
 
@@ -152,6 +152,28 @@
                     </div>
                 </div>
 
+                <!--Save Report-->
+                <div class="modal fade" id="myReportSave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">Save Report</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="formula">Report Name</label>
+                                    <input id="newReportName" type="text" class="form-control" placeholder="Report Name">
+
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="myReportSave">Cancel</button>
+                                <button type="button" class="btn btn-primary" id="saveReport">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="sectionC" class="tab-pane fade">
                 <div class="row">
