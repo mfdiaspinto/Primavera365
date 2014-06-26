@@ -228,76 +228,75 @@
             parameters: formula.getParameters(),
         }
 
-        //var urlPath = server + 'resultformula';
-        //$.ajax({
-        //    type: 'POST',
-        //    url: urlPath,
-        //    data: { formula: formulaServer },
-        //    success: function (data) {
-        //        Office.context.document.bindings.addFromNamedItemAsync(formula.getCell(), Office.BindingType.Text, { id: "PriFormula" },
-        //            function (asyncResult) {
-        //                if (asyncResult.status == "failed") {
-        //                    write('Error: ' + asyncResult.error.message);
-        //                }
-        //                else {
-        //                    // Write data to the new binding.
-        //                    if (data.length > 0) {
-        //                        var result = data[0].value;
-        //                        listFormulas.add(formula.getKey(), formula);
-
-        //                        Office.select("bindings#PriFormula").setDataAsync(result, { coercionType: Office.BindingType.Text },
-        //                            function (asyncResult) {
-        //                                if (asyncResult.status == "failed") {
-        //                                    write('Error: ' + asyncResult.error.message);
-        //                                }
-        //                                else {
-        //                                    $('#formulasDiv').append('<div class="row"><a id=' + formula.getKey() + ' href="#">' + formula.getName() + '</a></div>');
-        //                                    $('#' + formula.getKey()).click({ param1: formula.getKey() }, openFormula);
-        //                                    $('#myModal').modal('hide');
-        //                                    cleanNewFormula();
-        //                                }
-        //                            });
-        //                    }
-        //                }
-        //            });
-        //    },
-        //    error: function (error) {
-        //        write(error.statusText);
-        //    }
-        //});
-
-        $.getJSON(server + formula.getParameter("company") + "/netsales/" + formula.getParameter("year") + "/" + formula.getParameter("month") + "/" + "undefined", function (data) {
-            Office.context.document.bindings.addFromNamedItemAsync(formula.getCell(), Office.BindingType.Text, { id: "PriFormula" },
-                function (asyncResult) {
-                    if (asyncResult.status == "failed") {
-                        write('Error: ' + asyncResult.error.message);
-                    }
-                    else {
-                        // Write data to the new binding.
-                        if (data.length > 0) {
-                            var result = data[0].value;
-                            listFormulas.add(formula.getKey(), formula);
-
-                            Office.select("bindings#PriFormula").setDataAsync(result, { coercionType: Office.BindingType.Text },
-                                function (asyncResult) {
-                                    if (asyncResult.status == "failed") {
-                                        write('Error: ' + asyncResult.error.message);
-                                    }
-                                    else {
-                                        //$('#formulasDiv').append('<div class="row"><a id=' + formula.getKey() + ' href="#">' + formula.getName() + '</a></div>');
-                                        //$('#' + formula.getKey()).click({ param1: formula.getKey() }, openFormula);
-                                        $('#myModal').modal('hide');
-                                        cleanNewFormula();
-                                        layoutFormulaRefresh();
-                                    }
-                                });
+        var urlPath = server + 'resultformula';
+        $.ajax({
+            type: 'POST',
+            url: urlPath,
+            data: { formula: formulaServer },
+            success: function (data) {
+                Office.context.document.bindings.addFromNamedItemAsync(formula.getCell(), Office.BindingType.Text, { id: "PriFormula" },
+                    function (asyncResult) {
+                        if (asyncResult.status == "failed") {
+                            write('Error: ' + asyncResult.error.message);
                         }
-                    }
-                });
-            })
-          .fail(function (data) {
-              console.log("error");
-          });
+                        else {
+                            // Write data to the new binding.
+                            if (data.length > 0) {
+                                var result = data[0].value;
+                                listFormulas.add(formula.getKey(), formula);
+
+                                Office.select("bindings#PriFormula").setDataAsync(result, { coercionType: Office.BindingType.Text },
+                                    function (asyncResult) {
+                                        if (asyncResult.status == "failed") {
+                                            write('Error: ' + asyncResult.error.message);
+                                        }
+                                        else {
+                                            layoutFormulaRefresh();
+                                            $('#myModal').modal('hide');
+                                            cleanNewFormula();
+                                        }
+                                    });
+                            }
+                        }
+                    });
+            },
+            error: function (error) {
+                write(error.statusText);
+            }
+        });
+
+        //$.getJSON(server + formula.getParameter("company") + "/netsales/" + formula.getParameter("year") + "/" + formula.getParameter("month") + "/" + "undefined", function (data) {
+        //    Office.context.document.bindings.addFromNamedItemAsync(formula.getCell(), Office.BindingType.Text, { id: "PriFormula" },
+        //        function (asyncResult) {
+        //            if (asyncResult.status == "failed") {
+        //                write('Error: ' + asyncResult.error.message);
+        //            }
+        //            else {
+        //                // Write data to the new binding.
+        //                if (data.length > 0) {
+        //                    var result = data[0].value;
+        //                    listFormulas.add(formula.getKey(), formula);
+
+        //                    Office.select("bindings#PriFormula").setDataAsync(result, { coercionType: Office.BindingType.Text },
+        //                        function (asyncResult) {
+        //                            if (asyncResult.status == "failed") {
+        //                                write('Error: ' + asyncResult.error.message);
+        //                            }
+        //                            else {
+        //                                //$('#formulasDiv').append('<div class="row"><a id=' + formula.getKey() + ' href="#">' + formula.getName() + '</a></div>');
+        //                                //$('#' + formula.getKey()).click({ param1: formula.getKey() }, openFormula);
+        //                                $('#myModal').modal('hide');
+        //                                cleanNewFormula();
+        //                                layoutFormulaRefresh();
+        //                            }
+        //                        });
+        //                }
+        //            }
+        //        });
+          //  })
+          //.fail(function (data) {
+          //    console.log("error");
+          //});
     }
 
     function layoutFormulaRefresh() {
@@ -318,37 +317,53 @@
         formula.addParameter("month", $('#editFormulamonth').val());
         formula.addParameter("day", undefined);
 
-        $.getJSON(server + formula.getParameter("company") + "/netsales/" + formula.getParameter("year") + "/" + formula.getParameter("month") + "/" + formula.getParameter("day"), function (data) {
-            Office.context.document.bindings.addFromNamedItemAsync(formula.getCell(), Office.BindingType.Text, { id: "PriFormula" },
-                      function (asyncResult) {
-                          if (asyncResult.status == "failed") {
-                              write('Error: ' + asyncResult.error.message);
-                          }
-                          else {
+        var formulaServer = {
+            key: formula.getKey(),
+            name: formula.getName(),
+            formulaName: formula.getFormulaName(),
+            cell: formula.getCell(),
+            parameters: formula.getParameters(),
+        }
 
-                              if (data.length > 0) {
-                                  var result = data[0].value;
+        var urlPath = server + 'resultformula';
+        $.ajax({
+            type: 'POST',
+            url: urlPath,
+            data: { formula: formulaServer },
+            success: function (data) {
+                Office.context.document.bindings.addFromNamedItemAsync(formula.getCell(), Office.BindingType.Text, { id: "PriFormula" },
+                          function (asyncResult) {
+                              if (asyncResult.status == "failed") {
+                                  write('Error: ' + asyncResult.error.message);
+                              }
+                              else {
 
-                                  // Write data to the new binding.
-                                  Office.select("bindings#PriFormula").setDataAsync(result, { coercionType: Office.BindingType.Text },
-                                      function (asyncResult) {
-                                          if (asyncResult.status == "failed") {
-                                              write('Error: ' + asyncResult.error.message);
-                                          }
-                                          else {
-                                              formula.setName(formula.getFormulaName() + '/' + formula.getParameter("company") + '/' + formula.getParameter("year") + '/' + formula.getParameter("month"));
-                                              listFormulas.add(formula.getKey(), formula);
-                                              $('#' + formula.getKey()).text(formula.getName());
-                                              cleanEditFormula();
-                                          }
-                                      });
+                                  if (data.length > 0) {
+                                      var result = data[0].value;
+
+                                      // Write data to the new binding.
+                                      Office.select("bindings#PriFormula").setDataAsync(result, { coercionType: Office.BindingType.Text },
+                                          function (asyncResult) {
+                                              if (asyncResult.status == "failed") {
+                                                  write('Error: ' + asyncResult.error.message);
+                                              }
+                                              else {
+                                                  formula.setName(formula.getFormulaName() + '/' + formula.getParameter("company") + '/' + formula.getParameter("year") + '/' + formula.getParameter("month"));
+                                                  listFormulas.add(formula.getKey(), formula);
+                                                  $('#' + formula.getKey()).text(formula.getName());
+                                                  cleanEditFormula();
+                                              }
+                                          });
+                                  }
+                                  else {
+                                      write("Error: empty.");
+                                  }
                               }
-                              else
-                              {
-                                  write("Error: empty.");
-                              }
-                          }
-                      });
+                          });
+            },
+                error: function (error) {
+                    write(error.statusText);
+                }
         })
           .fail(function (data) {
               console.log("error");
@@ -400,34 +415,46 @@
     function refreshFormula(id) {
         var formula = listFormulas.getList(id + '_FORMULA');
         if (formula != undefined) {
-            $.getJSON(server + formula.getParameter("company") + "/netsales/" + formula.getParameter("year") + "/" + formula.getParameter("month") + "/" + formula.getParameter("day"), function (data) {
+            var formulaServer = {
+                key: formula.getKey(),
+                name: formula.getName(),
+                formulaName: formula.getFormulaName(),
+                cell: formula.getCell(),
+                parameters: formula.getParameters(),
+            }
 
-                Office.context.document.bindings.addFromNamedItemAsync(formula.getCell(), Office.BindingType.Text, { id: formula.getKey() },
-                          function (asyncResult) {
-                              if (asyncResult.status == "failed") {
-                                  write('Error: ' + asyncResult.error.message);
-                              }
-                              else {
-                                  if (data.length > 0) {
-                                      var result = data[0].value;
-
-                                      // Write data to the new binding.
-                                      Office.select("bindings#" + formula.getKey()).setDataAsync(result, { coercionType: Office.BindingType.Text },
-                                          function (asyncResult) {
-                                              if (asyncResult.status == "failed") {
-                                                  write('Error: ' + asyncResult.error.message);
-                                              }
-                                              else {
-                                                  refreshFormula(id + 1);
-                                              }
-                                          });
+            var urlPath = server + 'resultformula';
+            $.ajax({
+                type: 'POST',
+                url: urlPath,
+                data: { formula: formulaServer },
+                success: function (data) {
+                    Office.context.document.bindings.addFromNamedItemAsync(formula.getCell(), Office.BindingType.Text, { id: formula.getKey() },
+                              function (asyncResult) {
+                                  if (asyncResult.status == "failed") {
+                                      write('Error: ' + asyncResult.error.message);
                                   }
-                              }
-                          });
+                                  else {
+                                      if (data.length > 0) {
+                                          var result = data[0].value;
+
+                                          // Write data to the new binding.
+                                          Office.select("bindings#" + formula.getKey()).setDataAsync(result, { coercionType: Office.BindingType.Text },
+                                              function (asyncResult) {
+                                                  if (asyncResult.status == "failed") {
+                                                      write('Error: ' + asyncResult.error.message);
+                                                  }
+                                                  else {
+                                                      refreshFormula(id + 1);
+                                                  }
+                                              });
+                                      }
+                                  }
+                              });
+                }, error: function (error) {
+                    write(error.statusText);
+                }
             })
-              .fail(function (data) {
-                  write("Error in server");
-              });
         }
     }
 

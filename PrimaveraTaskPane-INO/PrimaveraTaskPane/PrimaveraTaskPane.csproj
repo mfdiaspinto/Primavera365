@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4b1d81b7-c6a6-4861-a342-56cc5ae57d58}</ProjectGuid>
+    <ProjectGuid>{4B1D81B7-C6A6-4861-A342-56CC5AE57D58}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PrimaveraTaskPane</RootNamespace>
@@ -20,6 +20,7 @@
     <SqlPackagePartId>{dcaa2745-1437-415c-a61e-e683a34ca675}</SqlPackagePartId>
     <ProjectMode>OfficeApp</ProjectMode>
     <ActiveDeploymentConfiguration>Default</ActiveDeploymentConfiguration>
+    <ActivePublishProfile>MyTest</ActivePublishProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
