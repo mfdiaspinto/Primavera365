@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <App xmlns="http://schemas.microsoft.com/sharepoint/2012/app/manifest"
      Name="PrimaveraTaskPane"
-     ProductID="{385e2589-1e93-43db-94aa-92c6cf3f714a}"
+     ProductID="{188c2ede-0fd9-48b7-95c9-05506dc0c4c5}"
      Version="1.0.0.0"
      SharePointMinVersion="15.0.0.0"
 >
