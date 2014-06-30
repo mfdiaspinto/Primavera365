@@ -143,9 +143,9 @@
     }
 
     function loadCompaniesForm() {
-        $.get("Templates/companies.htm", '', function (data) {
-            $("#companyDiv").append(data);
-            $('#load-lists').click(loadCompanyLists);
+        //$.get("Templates/companies.htm", '', function (data) {
+          //  $("#companyDiv").append(data);
+          //  $('#load-lists').click(loadCompanyLists);
 
             var urlPath = server + '/companies';
             $.ajax({
@@ -156,14 +156,14 @@
                     $('#companySelector').append('<option value=' + data[i].name + '>' + data[i].name + '</option>');
                     $('#editFormulaCompany').append('<option value=' + data[i].name + '>' + data[i].name + '</option>');
                     $('#newFormulaCompany').append('<option value=' + data[i].name + '>' + data[i].name + '</option>');
-
                   }
+                  loadListsForm();
                 },
                 error: function (error) {
                     write(error.statusText);
                 }
             });   
-        });
+       // });
     }
 
     function loadFormulas() {
@@ -586,7 +586,8 @@
 		    $('#loadReportFormulas').click(loadReportFormulas);
 
 
-		    loadCompaniesForm();
+            loadCompaniesForm();
+		   // loadCompanyLists;
 		    loadFormulas();
 		    getReports();
             });

@@ -26,19 +26,23 @@
 <body>
 	<!-- Page content -->
 	<div id="content-header">
-		<div class="padding">
+        <div class="padding">
             <h4>PRIMAVERA BSS</h4>
             <div id="loggedinuser"> </div>
-		</div>
+        </div>
        
 	</div>
-    <div id="content-main" class="row">
+    <div id="content-main">
 
         <div id="loginDiv" class="row">
         
         </div>
 
-        <ul class="nav nav-tabs">
+        <div class="col-md-10">
+            <select id="companySelector" class="form-control"></select>
+        </div>
+
+        <ul class="row nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#sectionA">Listas</a></li>
             <li><a data-toggle="tab" href="#sectionB">Formulas</a></li>
             <li><a data-toggle="tab" href="#sectionC">Reports</a></li>
@@ -47,7 +51,7 @@
         <div class="tab-content">
             <div id="sectionA" class="tab-pane fade in active">
               
-                  <div id="companyDiv" class="row">
+                <div id="companyDiv" class="col-md-6">
 
                 </div>
 
